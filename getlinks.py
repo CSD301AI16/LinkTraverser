@@ -2,17 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 
 class LinkTraverser():
-    rootURL = None
-    
-    def __init__(self, rootURL):
+    rootURL: str
+    max: int                # default 200
+
+    def __init__(self, rootURL: str, max = 200):
         self.rootURL = rootURL
         try:
             page = requests.get(url)
             print("Valid URL. A Traverser object created.")
         except requests.exceptions.RequestException as err:
             print("Invalid URL. Cannot reach page.")
-            raise err   # if not raising error here. An object with invalid URL will eventually cause exceptions later
+            raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
 
+        self.max = max
 
 
     def get_href_list(self):
@@ -23,23 +25,26 @@ class LinkTraverser():
             href = a.get("href")
             if href is None:
                 continue
-            if not ('.com' in href or '.vn' in href):           ## in case href is a subfolder in the webpage
+            if not ('.com' in href or '.vn' in href):           ## href is a subfolder in the webpage
                 href = self.rootURL+href
             href_list.append(href)
-
-        href_list = list(dict.fromkeys(href_list))              ## convert to a dict then convert back, to remove duplicates
+            if len(href_list) >= self.max:
+                break
         return href_list
 
 
-
+    
 ##### MAIN #####
 
 url = "https://fptshop.com.vn/"
-# url = "https://tiki.vn/"        # no link found inside tiki ? why --> 403 forbidden error
 
-travser = LinkTraverser(rootURL = url)
-
-list = travser.get_href_list()
-
+travser1 = LinkTraverser(rootURL = url, max = 23)
+list = travser1.get_href_list()
 if list is not None:
-    print("list of links in the page:\n", list)
+    print(len(list))
+
+
+travser2 = LinkTraverser(rootURL = url)
+list = travser2.get_href_list()
+if list is not None:
+    print(len(list))
