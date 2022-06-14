@@ -1,14 +1,14 @@
-import Node
+from Node import Node
 
 
 class Graph(object):
-    rootNode: Node = None
-    summaryLinkList: dict()
+    rootNode: Node
+    summaryLinkList = dict()
 
     def __init__(self, link: str):
-        self.rootNode.link = link
-        self.rootNode.inboundList = list
-        self.rootNode.outboundList = list
+        self.rootNode = Node(link)
+        self.rootNode.inboundList = []
+        self.rootNode.outboundList = []
         self.summaryLinkList[link] = self.rootNode
         return
 
@@ -62,6 +62,20 @@ class Graph(object):
             curr = queue.pop(0)
             if curr.link == link:
                 return curr
+            for i in self.rootNode.outboundList:
+                if i not in visited:
+                    queue.append(i)
+                    visited.append(i)
+        return None
+
+
+    def printBFT(self):
+        visited = [self.rootNode]
+        queue = [self.rootNode]
+
+        while queue:
+            curr = queue.pop(0)
+            print (str(curr), end = " ")
             for i in self.rootNode.outboundList:
                 if i not in visited:
                     queue.append(i)
