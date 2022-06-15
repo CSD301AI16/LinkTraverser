@@ -4,40 +4,38 @@ from Node import Node
 class Graph(object):
     rootNode: Node
     summaryLinkList = dict()
+    size = 0
 
-    def __init__(self, link: str):
+    def __init__(self, link: str, ibL=[], obL=[]):
         self.rootNode = Node(link)
         self.rootNode.inboundList = []
         self.rootNode.outboundList = []
+        for iblink in ibL:
+            if not self.getNode(iblink):
+                curr = Node(iblink, obL=[self.rootNode])
+                self.rootNode.insertInbound(curr)
+                self.insertNode(curr)
+        for oblink in obL:
+            if not self.getNode(oblink):
+                curr = Node(oblink, ibL=[self.rootNode])
+                self.rootNode.insertOutbound(curr)
+                self.insertNode(curr)
         self.summaryLinkList[link] = self.rootNode
         return
 
-    def insertNode(self, link: str, ibL: list, obL: list):
-        exist = self.getNodebyLink(link)
-        if exist:
-            print("Node existed")
-        else:
-            newNode = Node(link)
-            for iblink in ibL:
-                curribNode = self.getNodebyLink(str(iblink))
-                if curribNode is None:
-                    curribNode = self.insertNode(str(iblink), None, [newNode])
-                else:
-                    curribNode.insertOutbound(newNode)
-                newNode.insertInbound(curribNode)
-
-            for oblink in obL:
-                currobNode = self.getNodebyLink(str(oblink))
-                if currobNode is None:
-                    currobNode = self.insertNode(str(oblink), [newNode], None)
-                else:
-                    currobNode.insertInbound(newNode)
-                newNode.insertOutbound(currobNode)
-            self.summaryLinkList[link] = newNode
-        return newNode
-
-    def insertNode(self, link: str):
-        return self.insertNode(link=link, ibL=None, obL=None)
+    def insertNode(self, node: Node, ibL=[], obL=[]):
+        self.summaryLinkList[node.link] = node
+        for iblink in ibL:
+            if not self.getNode(iblink):
+                curr = Node(iblink, obL=[self.rootNode])
+                self.rootNode.insertInbound(curr)
+                self.insertNode(curr)
+        for oblink in obL:
+            if not self.getNode(oblink):
+                curr = Node(oblink, ibL=[self.rootNode])
+                self.rootNode.insertOutbound(curr)
+                self.insertNode(curr)
+        return node
 
     def getRoot(self):
         return self.rootNode

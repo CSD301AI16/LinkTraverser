@@ -4,16 +4,9 @@ from Node import Node
 
 url = "https://fptshop.com.vn/"
 
-travser1 = LinkTraverser(rootURL = url, max = 23)
-list = travser1.get_href_list()
-oblist = []
+travser1 = LinkTraverser(rootURL = url, max= 50)
+outboundlist = travser1.get_href_list()
 
 
-transver = Graph(url)
-
-##print(transver.rootNode)
-for link in list:
-    transver.rootNode.insertOutbound(Node(link, ibL=[transver.rootNode]))
-
-for i in transver.summaryLinkList[url].outboundList:
-    print(str(i))
+transver = Graph(url, obL=outboundlist)
+print(transver.summaryLinkList)
