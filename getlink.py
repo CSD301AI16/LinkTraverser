@@ -3,18 +3,14 @@ from bs4 import BeautifulSoup
 
 class LinkTraverser():
     rootURL: str
-    max: int                # default 200
+    max_hrefs: int                # default 200
 
-    def __init__(self, rootURL: str, max = 200):
+    def __init__(self, rootURL: str, max_hrefs = 200):
         self.rootURL = rootURL.rstrip('/')
-        try:
-            page = requests.get(self.rootURL)
-            print("Valid URL. A Traverser object created.")
-        except requests.exceptions.RequestException as err:
-            print("Invalid URL. Cannot reach page.")
-            raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
-
-        self.max = max
+        if not self.isURLReachable(rootURL):
+            err = requests.exceptions.RequestException
+            raise err
+        self.max_hrefs = max_hrefs
 
 
     def get_href_list(self):
@@ -30,14 +26,27 @@ class LinkTraverser():
             href = href.rstrip('/')
             if href == self.rootURL:
                 continue
+            if not self.isURLReachable(href):
+                continue
             href_list.append(href)
-            if len(href_list) >= self.max:
+            if len(href_list) >= self.max_hrefs:
                 break
         return href_list
 
+    def isURLReachable(self, url):
+        try:
+            page = requests.get(url)
+            print("Valid URL. A Traverser object created.")
+
+        except requests.exceptions.RequestException as err:
+            print("URL {} is unreachable.".format(url))
+            return False
+            # raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
+        return True
+        
 
     
-##### MAIN #####
+##### MAIN ##### *to test this file 
 
 # url = "https://fptshop.com.vn/"
 
