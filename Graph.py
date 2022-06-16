@@ -8,8 +8,6 @@ class Graph(object):
 
     def __init__(self, link: str, ibL=[], obL=[]):
         self.rootNode = Node(link)
-        self.rootNode.inboundList = []
-        self.rootNode.outboundList = []
         self.insertNode(self.rootNode, ibL, obL)
         return None
 

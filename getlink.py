@@ -28,6 +28,8 @@ class LinkTraverser():
                 continue
             if not self.isURLReachable(href):
                 continue
+            if href in href_list:   #bypass duplicate
+                continue
             href_list.append(href)
             if len(href_list) >= self.max_hrefs:
                 break
