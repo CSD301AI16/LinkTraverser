@@ -4,7 +4,7 @@ from Node import Node
 
 url = "https://fptshop.com.vn/"
 
-travser1 = LinkTraverser(rootURL = url, max= 50)
+travser1 = LinkTraverser(rootURL = url, max_hrefs= 50)
 outboundlist = travser1.get_href_list()
 
 
