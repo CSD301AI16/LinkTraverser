@@ -8,21 +8,29 @@ class Graph(object):
 
     def __init__(self, link: str, ibL=[], obL=[]):
         self.rootNode = Node(link)
-        self.rootNode = self.insertNode(self.rootNode, ibL, obL)
+        self.rootNode.inboundList = []
+        self.rootNode.outboundList = []
+        self.insertNode(self.rootNode, ibL, obL)
         return None
 
     def insertNode(self, node: Node, ibL=[], obL=[]):
-        for iblink in ibL:
-            if not self.getNode(iblink):
-                curr = Node(iblink, obL=[node])
-                self.rootNode.insertInbound(curr)
-                self.insertNode(curr)
-        for oblink in obL:
-            if not self.getNode(oblink):
-                curr = Node(oblink, ibL=[node])
-                self.rootNode.insertOutbound(curr)
-                self.insertNode(curr)
         self.summaryLinkList[node.link] = node
+        for iblink in ibL:
+            if not self.isExist(str(iblink)):
+                curr = Node(iblink)
+            else:
+                curr = self.getNode(iblink)
+            curr.insertOutbound(node)
+            node.insertInbound(curr)
+            self.insertNode(curr)
+        for oblink in obL:
+            if not self.isExist(oblink):
+                curr = Node(oblink)
+            else:
+                curr = self.getNode(oblink)
+            curr.insertInbound(node)
+            node.insertOutbound(curr)
+            self.insertNode(curr)
         return node
 
     def insertNodeByLink(self, link: str, ibL=[], obL=[]):
@@ -38,7 +46,7 @@ class Graph(object):
         return self.BFS(link)
 
     def isExist(self, link: str):
-        if self.getNode(link):
+        if link in self.summaryLinkList.keys():
             return True
         else:
             return False
@@ -51,7 +59,7 @@ class Graph(object):
             curr = queue.pop(0)
             if curr.link == link:
                 return curr
-            for i in self.rootNode.outboundList:
+            for i in curr.outboundList:
                 if i not in visited:
                     queue.append(i)
                     visited.append(i)
@@ -64,7 +72,7 @@ class Graph(object):
         while queue:
             curr = queue.pop(0)
             print(str(curr), end=" ")
-            for i in self.rootNode.outboundList:
+            for i in curr.outboundList:
                 if i not in visited:
                     queue.append(i)
                     visited.append(i)

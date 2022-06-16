@@ -5,10 +5,14 @@ class Node(object):
 
     def __init__(self, value, ibL=[], obL=[]):
         self.link = value
+        self.inboundList = []
+        self.outboundList = []
         for iblink in ibL:
-            self.insertInbound(iblink)
+            if iblink not in self.inboundList:
+                self.insertInbound(iblink)
         for oblink in obL:
-            self.insertOutbound(oblink)
+            if oblink not in self.outboundList:
+                self.insertOutbound(oblink)
 
 #   def __init__(self, value):
 #        self.link = value
@@ -23,10 +27,12 @@ class Node(object):
         return len(self.outboundList)
 
     def insertInbound(self, node):
-        self.inboundList.append(node)
+        if node not in self.inboundList:
+            self.inboundList.append(node)
 
     def insertOutbound(self, node):
-        self.outboundList.append(node)
+        if node not in self.outboundList:
+            self.outboundList.append(node)
 
 
 
