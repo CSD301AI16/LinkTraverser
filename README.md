@@ -29,9 +29,7 @@ To get a local copy up, follow these simple example steps.
    ```sh
    python runner.py
    ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
+   
 ## App description
 
 ### App template
@@ -47,3 +45,5 @@ To get a local copy up, follow these simple example steps.
 5. If you want to rank these URLs, click "Ranking URLs" button
 6. The final button is used to export these URLs to html file 
 
+
+<p align="right">(<a href="#top">back to top</a>)</p>
