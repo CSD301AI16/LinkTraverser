@@ -114,6 +114,9 @@ class Graph(object):
         print(*self.sorted_list, sep='\n')
         print('{} elements in the sorted list'.format(len(self.sorted_list)))
 
+    def get_sorted_elements(self):
+        return self.sorted_list
+
     def empty(self):
         self.rootNode = None
         self.summaryLinkList = dict()
