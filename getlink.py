@@ -1,17 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 class LinkTraverser():
     rootURL: str
     max_hrefs: int                # default 200
 
-    def __init__(self, rootURL: str, max_hrefs = 200):
+    def __init__(self, rootURL: str, max_hrefs=200):
         self.rootURL = rootURL.rstrip('/')
         if not self.isURLReachable(rootURL):
             err = requests.exceptions.RequestException
             raise err
         self.max_hrefs = max_hrefs
-
 
     def get_href_list(self):
         page = requests.get(self.rootURL)
@@ -21,7 +21,7 @@ class LinkTraverser():
             href = a.get("href")
             if href is None:
                 continue
-            if not ('.com' in href or '.vn' in href):           ## href is a subfolder in the webpage
+            if not ('.com' in href or '.vn' in href):  # href is a subfolder in the webpage
                 href = self.rootURL + '/' + href
             href = href.rstrip('/')
             if href == self.rootURL:
@@ -43,10 +43,9 @@ class LinkTraverser():
             return False
             # raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
         return True
-        
 
-    
-##### MAIN ##### *to test this file 
+
+# MAIN ##### *to test this file
 
 # url = "https://fptshop.com.vn/"
 
@@ -59,5 +58,5 @@ class LinkTraverser():
 # travser2 = LinkTraverser(rootURL = url)
 # list = travser2.get_href_list()
 # if list is not None:
-#     print(len(list))        
+#     print(len(list))
 #     print(list)
