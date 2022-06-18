@@ -1,14 +1,18 @@
-from tkinter import messagebox
+from tkinter import Toplevel, messagebox
 from requests import RequestException
 from graph.Graph import Graph
 from graph.getlink import LinkTraverser
 from turtle import onclick
 import tkinter as tk
+import os
+from tkinter import filedialog
 
 
 class ux:
     global traverse
     traverse = Graph('', obL=[])
+    global sourcePath
+    sourcePath = 'C:'
 
     def __init__(self) -> None:
         pass
@@ -35,3 +39,16 @@ class ux:
         traverse.sort()
         messagebox.showinfo("Ranking", 'Ranking completed')
         traverse.print_sorted_list()
+
+    def chooseFolder(self):
+        global source_path
+        source_path = filedialog.askdirectory(
+            title='Select the Directory')
+        print(source_path)
+
+    def saveFile(self):
+        filename = filedialog.asksaveasfile(mode='w',
+                                            filetypes=[('HTML file', '*.html')])
+        for i in traverse.get_sorted_elements():
+            filename.write('<a href ='+str(i)+'>'+str(i)+'</a>\n')
+        filename.close()
