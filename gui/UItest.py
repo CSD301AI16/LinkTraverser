@@ -1,4 +1,3 @@
-from cProfile import label
 import tkinter as tk
 from gui.ux import ux
 
