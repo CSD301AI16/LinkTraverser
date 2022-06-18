@@ -32,6 +32,8 @@ To get a local copy up, follow these simple example steps.
    
 ## App description
 
+Read carefully to know more about this app
+
 ### App template
 
 ![image](https://user-images.githubusercontent.com/74652429/174450292-46fad300-5122-496f-bff5-89031191f9de.png)
