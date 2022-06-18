@@ -1,10 +1,13 @@
 import tkinter as tk
+
+from kiwisolver import Variable
 from gui.ux import ux
 
 ux = ux()
 
 
 class MyApp(tk.Tk):
+
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.geometry("500x240")
@@ -19,6 +22,7 @@ class MyApp(tk.Tk):
 
         def getSliderVal(event):
             return sliderVal.get()
+
         # Input frame
         inputFrame = tk.Frame(valFrame)
         inputLabel = tk.Label(inputFrame, text="Input URL")
@@ -51,6 +55,12 @@ class MyApp(tk.Tk):
                              activebackground='green', command=lambda: ux.ranking())
         pageRank.grid(row=0, column=1, padx=20, pady=10)
         exportFile = tk.Button(buttonFrame, text="Export to file",
-                               activebackground='green', command=lambda: print('b'))
+                               activebackground='green', command=lambda: ux.saveFile())
         exportFile.grid(row=0, column=2, padx=20, pady=10)
         buttonFrame.place(x=80, y=150)
+
+
+if __name__ == "__main__":
+    window = MyApp()
+    window.title('CSD301')
+    window.mainloop()
