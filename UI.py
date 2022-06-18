@@ -73,7 +73,6 @@ def crawl():
     if webCrawl is not onclick:
         _crawl(inputVal.get(), sliderVal.get())
         messagebox.showinfo("Crawl web", "Crawl web successfully")
-    _crawl(str(inputVal.get()), sliderVal.get())
 
 
 def ranking(traverse):
