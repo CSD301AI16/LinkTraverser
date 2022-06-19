@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from queue import Queue
-rootLink="https://www.youtube.com/"
+rootLink="file:///C:/Users/Admin/Desktop/testHTML.html"
 class Node:
     def __init__(self,link:str=None,inboundList:list=[],outboundList:list=[]) -> None:
         self.link=link
@@ -17,10 +17,14 @@ class Node:
             return len(self.outboundList)
         else:   
             return None
+    # each node have an inbound list to store nodes that link into it, this method will
+    # this method insert a node to that list
     def insertInbound(self,node):
         self.inboundList.append(node)
+    # like inbound list, but this is for outbound
     def insertOutbound(self,node):
         self.outboundList.append(node)
+    # return whether this link is not in the Inbound list or else
     def findInbound(self,link:str):
         if not(self.inboundList is None):
             for i in self.inboundList:
@@ -29,6 +33,7 @@ class Node:
             return True
         else:
             return False
+    # return whether this link is not in the outbound list or else
     def findOutbound(self,link:str):
         if not(self.outboundList is None):
             for i in self.outboundList:
@@ -44,11 +49,15 @@ class Graph:
         self.summaryLinkList=summaryLinkList
         self.max_hrefs=max_href
         self.maxNode=maxNode
+    # return if the link is crawled or not
     def crawledLink(self,link:str)->bool:
         if self.summaryLinkList is None:
             return False
         else:
             return (link in self.summaryLinkList)
+    # insert a link, if link not existed then return true, else return false.
+    # note: even when existed but if the connection is new (new mean not violate the rule two outbound same or two inbound same)
+    #       then the node is still be inserted.
     def insertNode(self,currentNode:Node,link:str)->bool:
         if (self.crawledLink(link)):
             try:
@@ -100,6 +109,7 @@ class Graph:
             return False
             # raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
         return True
+    # using breadth first search to create the graph
     def BFS(self):
         queue=Queue(maxsize = 10000)
         queue.put(self.rootNode.link)
@@ -110,8 +120,13 @@ class Graph:
                 notChecked=self.insertNode(currentNode=self.summaryLinkList[currentLink],link=i)
                 if notChecked:
                     queue.put(i)
+# make a root node
 root=Node(link=rootLink)
+# the summaryLinkList will have only the root node at first with root node's link as key,
+# max_href= max number of link each node can point to
+# maxNode= max number of node this graph can have 
 graph=Graph(root,summaryLinkList={rootLink:root},max_href=2,maxNode=10)
+# use BFS to make graph
 graph.BFS()
 
 
