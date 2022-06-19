@@ -50,5 +50,5 @@ class ux:
         filename = filedialog.asksaveasfile(mode='w',
                                             filetypes=[('HTML file', '*.html')])
         for i in traverse.get_sorted_elements():
-            filename.write('<a href ='+str(i)+'>'+str(i)+'</a>\n')
+            filename.write('<div><a href ='+str(i)+'>'+str(i)+'</a></div>\n')
         filename.close()
