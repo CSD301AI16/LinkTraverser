@@ -1,10 +1,9 @@
-from tkinter import Toplevel, messagebox
+from tkinter import messagebox
 from requests import RequestException
 from graph.Graph import Graph
 from graph.getlink import LinkTraverser
 from turtle import onclick
 import tkinter as tk
-import os
 from tkinter import filedialog
 
 
