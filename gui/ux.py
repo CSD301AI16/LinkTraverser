@@ -38,7 +38,7 @@ class ux:
             messagebox.showerror("Error", "Invalid URL")
 
     def ranking(self):
-        if len(traverse.summaryLinkList) == 1:
+        if len(traverse.summaryLinkList) == 0:
             messagebox.showinfo("Error", "Crawl first")
         else:
             traverse.sort()
