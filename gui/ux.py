@@ -1,15 +1,17 @@
 from tkinter import messagebox
-from requests import RequestException
-from graph.Graph import Graph
-from graph.getlink import LinkTraverser
+# from graph.Graph import Graph
+# from graph.getlink import LinkTraverser
 from turtle import onclick
 import tkinter as tk
 from tkinter import filedialog
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+from graph.Grapher import Graph, Node
 
 
 class ux:
     global traverse
-    traverse = Graph('', obL=[])
+    traverse = Graph('', summaryLinkList={})
     global sourcePath
     sourcePath = 'C:'
 
@@ -17,37 +19,35 @@ class ux:
         pass
 
     def crawl(self, url, max_hrefs, webCrawl: tk.Button):
-        specSign = ['/', ' ']
-        for i in specSign:
-            for j in specSign:
-                url = url.lstrip(i).rstrip(j)
+        global traverse
         if 'https://' not in url:
             url = 'https://' + url + '//'
-        global traverse
-        if webCrawl is not onclick:
-            traverse.empty()
-            try:
-                travser1 = LinkTraverser(rootURL=url, max_hrefs=max_hrefs)
-                outboundlist = travser1.get_href_list()
-                traverse = Graph(url, obL=outboundlist)
+        validate = URLValidator()
+        root = Node(link=url)
+        try:
+            validate(url)
+            if webCrawl is not onclick:
+                traverse.empty()
+                # travser1 = LinkTraverser(rootURL=url, max_hrefs=max_hrefs)
+                # outboundlist = travser1.get_href_list()
+                traverse = Graph(root, summaryLinkList={url: root},
+                                 max_href=max_hrefs, maxNode=max_hrefs)
+                traverse.BFS()
                 print(traverse.summaryLinkList)
-            except RequestException as e:
-                messagebox.showerror("Error", "Invalid URL")
+        except ValidationError:
+            messagebox.showerror("Error", "Invalid URL")
 
     def ranking(self):
-        traverse.sort()
-        messagebox.showinfo("Ranking", 'Ranking completed')
-        traverse.print_sorted_list()
-
-    def chooseFolder(self):
-        global source_path
-        source_path = filedialog.askdirectory(
-            title='Select the Directory')
-        print(source_path)
+        if len(traverse.summaryLinkList) == 1:
+            messagebox.showinfo("Error", "Crawl first")
+        else:
+            traverse.sort()
+            messagebox.showinfo("Ranking", 'Ranking completed')
+            traverse.print_sorted_list()
 
     def saveFile(self):
         filename = filedialog.asksaveasfile(mode='w',
-                                            filetypes=[('HTML file', '*.html')])
+                                            filetypes=[('HTML file', '*.html')], defaultextension='.html')
         for i in traverse.get_sorted_elements():
             filename.write('<div><a href ='+str(i)+'>'+str(i)+'</a></div>\n')
         filename.close()

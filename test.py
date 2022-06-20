@@ -1,6 +1,6 @@
-from getlink import LinkTraverser
-from Graph import Graph
-from Node import Node
+from graph.getlink import LinkTraverser
+from graph.Graph import Graph
+from graph.Node import Node
 
 url = "https://fptshop.com.vn/"
 
