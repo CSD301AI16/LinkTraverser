@@ -3,6 +3,10 @@
 This is instructions on setting up this project locally.
 To get a local copy up, follow these simple example steps.
 
+### Prerequisites
+
+Python3
+
 ### Installation
 
 1. Clone the repo
@@ -11,15 +15,15 @@ To get a local copy up, follow these simple example steps.
    ```
 2. Install all required package
    ```sh
+   cd LinkTraverser
    pip install -r requirements.txt
    ```
 ### Run the project
 
 1. Change to this project folder
 
-   After cloning the repo, copy this in cmd(Windows) or Terminal(MacOs, Linux):
+   After cloning the repo, type this to open the code:
    ```sh
-   cd LinkTraverser
    code .
    ```
 
