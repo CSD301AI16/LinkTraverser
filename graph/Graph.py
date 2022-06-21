@@ -31,7 +31,6 @@ class Graph(object):
             curr.insertInbound(node)
             node.insertOutbound(curr)
             self.insertNode(curr)
-            print(curr)
         return node
 
     def insertNodeByLink(self, link: str, ibL=[], obL=[]):
@@ -119,5 +118,5 @@ class Graph(object):
         return self.sorted_list
 
     def empty(self):
-        self.rootNode = Node
-        self.summaryLinkList.clear()
+        self.rootNode = None
+        self.summaryLinkList = dict()

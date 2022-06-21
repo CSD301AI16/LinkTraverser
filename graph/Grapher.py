@@ -48,7 +48,7 @@ class Node:
 
 
 class Graph:
-    def __init__(self, rootNode: Node = None, summaryLinkList: dict = {}, max_href: int = 10, maxNode: int = 1000) -> None:
+    def __init__(self, rootNode: Node = None, summaryLinkList: dict = {}, max_href: int = 50, maxNode: int = 1000) -> None:
         self.rootNode = rootNode
         self.summaryLinkList = summaryLinkList
         self.max_hrefs = max_href
@@ -141,7 +141,7 @@ class Graph:
                 i += 1
                 continue
             if node.getNumberOfInbound() == self.sorted_list[i].getNumberOfInbound():
-                if node.getNumberOfOutbound() > self.sorted_list[i].getNumberOfOutbound():
+                if node.getNumberOfOutbound > self.sorted_list[i].getNumberOfOutbound():
                     i += 1
                     continue
                 self.sorted_list.insert(i, node)
@@ -163,15 +163,8 @@ class Graph:
                     visited.append(node)
 
     def print_sorted_list(self):
-        for i in range(len(self.sorted_list)):
-            print('{} Inbound links - {} Outbound links - Link: {}'.format(self.sorted_list[i].getNumberOfInbound(),
-                                                                           self.sorted_list[i].getNumberOfOutbound(
-            ),
-                self.sorted_list[i].link))
+        print(*self.sorted_list, sep='\n')
         print('{} elements in the sorted list'.format(len(self.sorted_list)))
-
-    def get_sorted_elements(self):
-        return self.sorted_list
 
     def get_sorted_elements(self):
         return self.sorted_list

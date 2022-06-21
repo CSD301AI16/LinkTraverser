@@ -37,7 +37,7 @@ class MyApp(tk.Tk):
         sliderLabel = tk.Label(sliderFrame, text="Maximum link")
         sliderLabel.grid(row=0, column=0, padx=27)
         sliderVal = tk.IntVar()
-        slider = tk.Scale(sliderFrame, from_=1, to=500, orient=tk.HORIZONTAL,
+        slider = tk.Scale(sliderFrame, from_=0, to=500, orient=tk.HORIZONTAL,
                           variable=sliderVal, length=250, showvalue=0, width=20, command=getSliderVal)
         slider.grid(row=0, column=1)
         sliderEntry = tk.Entry(sliderFrame, width=3,
