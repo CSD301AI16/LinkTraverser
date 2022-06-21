@@ -10,7 +10,7 @@ class MyApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.geometry("500x240")
+        self.geometry("500x300")
         label = tk.Label(self, text="Smart web crawler", font=(
             "digital-7", 30, "bold"), foreground="green")
         label.pack(pady=10)
@@ -20,8 +20,11 @@ class MyApp(tk.Tk):
         inputVal = tk.StringVar()
         sliderVal = tk.IntVar()
 
-        def getSliderVal(event):
+        def getSliderVal(event1):
             return sliderVal.get()
+
+        def getMaxNodeSliderVal(event2):
+            return maxNodeVal.get()
 
         # Input frame
         inputFrame = tk.Frame(valFrame)
@@ -35,21 +38,34 @@ class MyApp(tk.Tk):
         # Slider frame
         sliderFrame = tk.Frame(valFrame)
         sliderLabel = tk.Label(sliderFrame, text="Maximum link")
-        sliderLabel.grid(row=0, column=0, padx=27)
+        sliderLabel.grid(row=0, column=0, padx=26)
         sliderVal = tk.IntVar()
-        slider = tk.Scale(sliderFrame, from_=0, to=500, orient=tk.HORIZONTAL,
+        slider = tk.Scale(sliderFrame, from_=1, to=500, orient=tk.HORIZONTAL,
                           variable=sliderVal, length=250, showvalue=0, width=20, command=getSliderVal)
         slider.grid(row=0, column=1)
         sliderEntry = tk.Entry(sliderFrame, width=3,
                                textvariable=sliderVal, text=sliderVal)
         sliderEntry.grid(row=0, column=2)
         sliderFrame.grid(row=1, column=0, padx=0, pady=10)
+
+        # Max node slider frame
+        maxNodeFrame = tk.Frame(valFrame)
+        maxNodeLabel = tk.Label(maxNodeFrame, text="Maximum node")
+        maxNodeLabel.grid(row=0, column=0, padx=22)
+        maxNodeVal = tk.IntVar()
+        maxNodeSlider = tk.Scale(maxNodeFrame, from_=1, to=500, orient=tk.HORIZONTAL,
+                                 variable=maxNodeVal, length=250, showvalue=0, width=20, command=getMaxNodeSliderVal)
+        maxNodeSlider.grid(row=0, column=1)
+        maxNodeEntry = tk.Entry(maxNodeFrame, width=3,
+                                textvariable=maxNodeVal, text=maxNodeVal)
+        maxNodeEntry.grid(row=0, column=2)
+        maxNodeFrame.grid(row=2, column=0, padx=2, pady=0)
         valFrame.pack(padx=0, pady=0)
 
         # Button frame
         buttonFrame = tk.Frame(self)
         webCrawl = tk.Button(buttonFrame, text="Crawl web",
-                             activebackground="green", command=lambda: ux.crawl(str(inputVal.get()), int(sliderVal.get()), webCrawl))
+                             activebackground="green", command=lambda: ux.crawl(str(inputVal.get()), int(sliderVal.get()), int(maxNodeVal.get())))
         webCrawl.grid(row=0, column=0, padx=20, pady=10)
         pageRank = tk.Button(buttonFrame, text="Ranking URLs",
                              activebackground='green', command=lambda: ux.ranking())
@@ -57,7 +73,7 @@ class MyApp(tk.Tk):
         exportFile = tk.Button(buttonFrame, text="Export to file",
                                activebackground='green', command=lambda: ux.saveFile())
         exportFile.grid(row=0, column=2, padx=20, pady=10)
-        buttonFrame.place(x=80, y=150)
+        buttonFrame.place(x=80, y=180)
 
 
 if __name__ == "__main__":
