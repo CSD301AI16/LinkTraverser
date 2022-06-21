@@ -1,11 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 from queue import Queue
+from urllib.parse import urlparse, parse_qsl, unquote_plus
 rootLink = "https://www.youtube.com/"
 
 
 class Node:
-    def __init__(self, link: str = None, inboundList: list = [], outboundList: list = []) -> None:
+    def __init__(self, link: str = None, inboundList=None, outboundList=None) -> None:
+        if inboundList == None:
+            inboundList = []
+        if outboundList == None:
+            outboundList = []
         self.link = link
         self.inboundList = inboundList
         self.outboundList = outboundList
@@ -21,12 +26,16 @@ class Node:
             return len(self.outboundList)
         else:
             return None
+    # each node have an inbound list to store nodes that link into it, this method will
+    # this method insert a node to that list
 
     def insertInbound(self, node):
         self.inboundList.append(node)
+    # like inbound list, but this is for outbound
 
     def insertOutbound(self, node):
         self.outboundList.append(node)
+    # return whether this link is not in the Inbound list or else
 
     def findInbound(self, link: str):
         if not(self.inboundList is None):
@@ -36,6 +45,7 @@ class Node:
             return True
         else:
             return False
+    # return whether this link is not in the outbound list or else
 
     def findOutbound(self, link: str):
         if not(self.outboundList is None):
@@ -45,22 +55,31 @@ class Node:
             return True
         else:
             return False
+# def get_simulator(path:str)->
 
 
 class Graph:
-    def __init__(self, rootNode: Node = None, summaryLinkList: dict = {}, max_href: int = 50, maxNode: int = 1000) -> None:
+    def __init__(self, rootNode: Node = None, summaryLinkList: dict = None, max_href: int = 50, maxNode: int = 1000) -> None:
+        if summaryLinkList == None:
+            summaryLinkList = {}
         self.rootNode = rootNode
         self.summaryLinkList = summaryLinkList
         self.max_hrefs = max_href
         self.maxNode = maxNode
+    # return if the link is crawled or not
 
     def crawledLink(self, link: str) -> bool:
         if self.summaryLinkList is None:
             return False
         else:
             return (link in self.summaryLinkList)
+    # insert a link, if link not existed then return true, else return false.
+    # note: even when existed but if the connection is new (new mean not violate the rule two outbound same or two inbound same)
+    #       then the node is still be inserted.
 
     def insertNode(self, currentNode: Node, link: str) -> bool:
+        if (Url(currentNode.link) == Url(link)):
+            return False
         if (self.crawledLink(link)):
             try:
                 if not currentNode.findOutbound(link):
@@ -98,6 +117,8 @@ class Graph:
                 continue
             if not self.isURLReachable(href):
                 continue
+            if (Url(href) == Url(link)):
+                continue
             href_list.append(href)
             if len(href_list) >= self.max_hrefs:
                 break
@@ -113,6 +134,7 @@ class Graph:
             return False
             # raise err   # if not raising error here. An object with invalid URL will eventually cause exception later
         return True
+    # using breadth first search to create the graph
 
     def BFS(self):
         queue = Queue(maxsize=10000)
@@ -126,10 +148,6 @@ class Graph:
                 if notChecked:
                     queue.put(i)
 
-    def empty(self):
-        self.rootNode = None
-        self.summaryLinkList = dict()
-
     def _insert_node_into_sorted_list(self, node: Node):
         i = 0
         while True:
@@ -141,7 +159,7 @@ class Graph:
                 i += 1
                 continue
             if node.getNumberOfInbound() == self.sorted_list[i].getNumberOfInbound():
-                if node.getNumberOfOutbound > self.sorted_list[i].getNumberOfOutbound():
+                if node.getNumberOfOutbound() > self.sorted_list[i].getNumberOfOutbound():
                     i += 1
                     continue
                 self.sorted_list.insert(i, node)
@@ -163,15 +181,45 @@ class Graph:
                     visited.append(node)
 
     def print_sorted_list(self):
-        print(*self.sorted_list, sep='\n')
+        for i in range(len(self.sorted_list)):
+            print('{} Inbound links - {} Outbound links - Link: {}'.format(self.sorted_list[i].getNumberOfInbound(),
+                                                                           self.sorted_list[i].getNumberOfOutbound(
+            ),
+                self.sorted_list[i].link))
         print('{} elements in the sorted list'.format(len(self.sorted_list)))
 
     def get_sorted_elements(self):
         return self.sorted_list
 
 
-if __name__ == "__main__":
+class Url(object):
+    '''A url object that can be compared with other url orbjects
+    without regard to the vagaries of encoding, escaping, and ordering
+    of parameters in query strings.'''
+
+    def __init__(self, url):
+        url = url.rstrip('/')
+        parts = urlparse(url)
+        _query = frozenset(parse_qsl(parts.query))
+        _path = unquote_plus(parts.path)
+        parts = parts._replace(query=_query, path=_path)
+        self.parts = parts
+
+    def __eq__(self, other):
+        return self.parts == other.parts
+
+    def __hash__(self):
+        return hash(self.parts)
+
+
+if __name__ == '__main__':
+    # make a root node
     root = Node(link=rootLink)
+    # the summaryLinkList will have only the root node at first with root node's link as key,
+    # max_href= max number of link each node can point to
+    # maxNode= max number of node this graph can have
     graph = Graph(root, summaryLinkList={
-                  rootLink: root}, max_href=2, maxNode=10)
+                  rootLink: root}, max_href=5, maxNode=10)
+    # use BFS to make graph
     graph.BFS()
+    # test git
