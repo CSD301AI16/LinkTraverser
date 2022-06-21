@@ -119,4 +119,4 @@ class Graph(object):
 
     def empty(self):
         self.rootNode = None
-        self.summaryLinkList = dict()
+        self.summaryLinkList.clear()
