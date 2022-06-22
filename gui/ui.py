@@ -11,6 +11,14 @@ class MyApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.geometry("500x300")
+
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth()//2) - (width//2)
+        y = (self.winfo_screenheight()//2) - (height//2)
+        self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+
         label = tk.Label(self, text="Smart web crawler", font=(
             "digital-7", 30, "bold"), foreground="green")
         label.pack(pady=10)

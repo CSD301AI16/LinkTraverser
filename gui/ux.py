@@ -16,18 +16,21 @@ class ux:
 
     def crawl(self, url, max_hrefs, maxNode):
         global traverse
-        if 'https://' not in url:
-            url = 'https://' + url
-        root = Node(link=url)
-        try:
-            # travser1 = LinkTraverser(rootURL=url, max_hrefs=max_hrefs)
-            # outboundlist = travser1.get_href_list()
-            traverse = Graph(root, summaryLinkList={url: root},
-                             max_href=max_hrefs, maxNode=maxNode)
-            traverse.BFS()
-            print(traverse.summaryLinkList)
-        except RequestException:
-            messagebox.showerror("Error", "Invalid URL")
+        if url == '':
+            messagebox.showinfo("Error", "Input URL")
+        else:
+            if 'https://' not in url:
+                url = 'https://' + url
+            root = Node(link=url)
+            try:
+                # travser1 = LinkTraverser(rootURL=url, max_hrefs=max_hrefs)
+                # outboundlist = travser1.get_href_list()
+                traverse = Graph(root, summaryLinkList={url: root},
+                                 max_href=max_hrefs, maxNode=maxNode)
+                traverse.BFS()
+                print(traverse.summaryLinkList)
+            except RequestException:
+                messagebox.showerror("Error", "Invalid URL")
 
     def ranking(self):
         if len(traverse.summaryLinkList) == 0:
