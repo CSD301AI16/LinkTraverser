@@ -1,5 +1,3 @@
 tkinter
 bs4
 requests
-turtle
-django

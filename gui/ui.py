@@ -1,6 +1,5 @@
 import tkinter as tk
 
-from kiwisolver import Variable
 from gui.ux import ux
 
 ux = ux()
