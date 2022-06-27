@@ -82,7 +82,7 @@ class Graph:
             return False
         if (self.crawledLink(link)):
             try:
-                if not currentNode.findOutbound(link):
+                if currentNode.findOutbound(link):
                     currentNode.insertOutbound(self.summaryLinkList[link])
                     self.summaryLinkList[link].insertInbound(currentNode)
                 return False
