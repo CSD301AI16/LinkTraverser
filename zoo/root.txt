@@ -1,0 +1,2 @@
+D:\học python\CSD301\LocalLinkTraverser\LinkTraverser\zoo\sub zoo1\Node2.txt
+D:\học python\CSD301\LocalLinkTraverser\LinkTraverser\zoo\sub zoo1\Node3.txt

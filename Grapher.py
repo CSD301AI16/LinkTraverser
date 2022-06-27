@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from queue import Queue
 from urllib.parse import urlparse, parse_qsl, unquote_plus
-rootLink="https://www.youtube.com/"
+rootLink=r"D:\học python\CSD301\LocalLinkTraverser\LinkTraverser\zoo\root.txt"
 
 class Node:
     def __init__(self,link:str=None,inboundList=None,outboundList=None) -> None:
@@ -67,8 +67,8 @@ class Graph:
     # note: even when existed but if the connection is new (new mean not violate the rule two outbound same or two inbound same)
     #       then the node is still be inserted.
     def insertNode(self,currentNode:Node,link:str)->bool:
-        if (Url(currentNode.link)==Url(link)):
-            return False
+        # if (Url(currentNode.link)==Url(link)):
+        #     return False
         if (self.crawledLink(link)):
             try:
                 if not currentNode.findOutbound(link):
@@ -127,7 +127,7 @@ class Graph:
         queue.put(self.rootNode.link)
         while (len(self.summaryLinkList)<=self.maxNode)and(not queue.empty()):
             currentLink=queue.get()
-            linkHref=self.get_href_list(currentLink)
+            linkHref=get_link_list(currentLink)
             for i in linkHref:
                 notChecked=self.insertNode(currentNode=self.summaryLinkList[currentLink],link=i)
                 if notChecked:
@@ -159,14 +159,23 @@ from os.path import exists
 def get_link_list(path:str)->list:
     if not exists(path):
         return None
-    file_handle=open(path,"r")
+    file_handle=open(path,"r",encoding='utf-8')
     result=[]
     for i in file_handle:
-        result.append(i)
+        result.append(i.rstrip('\n'))
     return result
 graph=Graph(root,summaryLinkList={rootLink:root},max_href=5,maxNode=10)
 # use BFS to make graph
 graph.BFS()
+pass
+for i in graph.summaryLinkList:
+    print(i[i.rfind('\\'):]+" list: ")
+    print("Inbound: ")
+    for j in graph.summaryLinkList[i].inboundList:
+        print(j.link)
+    print("Outbound: ")
+    for j in graph.summaryLinkList[i].outboundList:
+        print(j.link)
 #test git
 
 
