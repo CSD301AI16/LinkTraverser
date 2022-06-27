@@ -71,7 +71,7 @@ class Graph:
         #     return False
         if (self.crawledLink(link)):
             try:
-                if not currentNode.findOutbound(link):
+                if currentNode.findOutbound(link):
                     currentNode.insertOutbound(self.summaryLinkList[link])
                     self.summaryLinkList[link].insertInbound(currentNode)
                 return False
@@ -127,6 +127,8 @@ class Graph:
         queue.put(self.rootNode.link)
         while (len(self.summaryLinkList)<=self.maxNode)and(not queue.empty()):
             currentLink=queue.get()
+            if currentLink=='D:\\học python\\CSD301\\LocalLinkTraverser\\LinkTraverser\\zoo\\sub zoo2\\Node4.txt':
+                print("hello")
             linkHref=get_link_list(currentLink)
             for i in linkHref:
                 notChecked=self.insertNode(currentNode=self.summaryLinkList[currentLink],link=i)
