@@ -103,7 +103,8 @@ class Graph:
             return None
 
     def get_href_list(self, link: str):
-        page = requests.get(link)
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'}
+        page = requests.get(link, headers=headers)
         soup = BeautifulSoup(page.content, 'html.parser')
         href_list = []
         for a in soup.find_all('a'):
@@ -126,7 +127,8 @@ class Graph:
 
     def isURLReachable(self, url):
         try:
-            page = requests.get(url)
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'}
+            page = requests.get(url, headers=headers)
             print("Valid URL. A Traverser object created.")
 
         except requests.exceptions.RequestException as err:
