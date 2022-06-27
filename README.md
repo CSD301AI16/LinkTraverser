@@ -40,7 +40,7 @@ Read carefully to know more about this app
 
 ### App template
 
-![image](https://user-images.githubusercontent.com/74652429/174450292-46fad300-5122-496f-bff5-89031191f9de.png)
+![image](https://user-images.githubusercontent.com/74652429/175850127-d74b5680-5fb9-4105-b1bf-4ea5db0481b6.png)
 
 ### How to use this app
 
